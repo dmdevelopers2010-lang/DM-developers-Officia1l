@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Developers | Official Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@300;400;600&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        :root {
+            --toxic-green: #39FF14;
+            --obsidian: #0B0B0B;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #ffffff;
+            font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Preloader / Welcome Modal */
+        #welcome-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--obsidian);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(57, 255, 20, 0.1);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .neon-border:hover {
+            border-color: var(--toxic-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+        }
+
+        /* Assistive Touch Music Controller */
+        .music-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--toxic-green);
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--toxic-green);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            accent-color: var(--toxic-green);
+            display: none;
+        }
+
+        .music-widget:hover .volume-slider {
+            display: block;
+        }
+
+        /* RGB Animations */
+        @keyframes rgb-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .rgb-border {
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff00ff);
+            background-size: 300% 300%;
+            animation: rgb-flow 5s linear infinite;
+        }
+
+        .tab-active {
+            color: var(--toxic-green);
+            border-bottom: 2px solid var(--toxic-green);
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .hero-title {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+            text-shadow: 0 0 10px var(--toxic-green);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Welcome Overlay -->
+    <div id="welcome-overlay">
+        <div class="p-8 max-w-md">
+            <div class="w-24 h-24 rgb-border rounded-full mx-auto p-1 mb-6">
+                <img src="https://image2url.com/r2/default/images/1769608850604-7fac133a-1961-42d2-a78d-6b604a66f6ca.png" class="rounded-full w-full h-full bg-black object-cover" alt="Logo">
+            </div>
+            <h1 class="text-3xl font-bold mb-4">Welcome to DM Developers</h1>
+            <p class="text-gray-400 mb-8">We are crafting the digital future. Continue to enjoy the experience with our official background music.</p>
+            <button id="continue-btn" class="bg-[#39FF14] text-black font-bold px-10 py-3 rounded-full hover:scale-105 transition-transform">
+                CONTINUE
+            </button>
+        </div>
+    </div>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop>
+        <source src="https://raw.githubusercontent.com/dmdevelopers2010-lang/DM-developers-Officia1l/91ac00b85dc4dd836d39471b09dddd977d65d318/Pal%20Pal%20x%20Talwiinder%20-%20Afusic%20x%20Haseen%20%20Trending%20Talwiinder%20Mashup%20%20DJ%20Sumit%20Rajwanshi%20(1).mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Controller Widget -->
+    <div class="music-widget">
+        <input type="range" id="volume-control" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
+        <div id="music-toggle" class="floating-btn">
+            <i class="fas fa-play" id="play-icon"></i>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-[#0B0B0B]/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="https://image2url.com/r2/default/images/1769608850604-7fac133a-1961-42d2-a78d-6b604a66f6ca.png" class="w-10 h-10 rounded-full" alt="Logo">
+                <span class="font-bold text-xl tracking-tighter">DM <span class="text-[#39FF14]">DEVS</span></span>
+            </div>
+            <div class="flex gap-6 text-sm font-semibold uppercase tracking-widest">
+                <button onclick="showSection('home')" class="nav-link tab-active" id="btn-home">Home</button>
+                <button onclick="showSection('projects')" class="nav-link" id="btn-projects">Projects</button>
+                <button onclick="showSection('about')" class="nav-link" id="btn-about">About</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Sections -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        
+        <!-- HOME SECTION -->
+        <section id="home-section">
+            <div class="text-center py-20">
+                <h2 class="hero-title text-6xl md:text-8xl font-black mb-6">INNOVATION<br><span class="text-[#39FF14]">UNLEASHED</span></h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">We are a small team with big dreams. From language learning platforms to upcoming games, we build what we love.</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="showSection('projects')" class="bg-white text-black px-8 py-3 rounded-full font-bold">Explore Projects</button>
+                    <button onclick="showSection('about')" class="border border-white/20 px-8 py-3 rounded-full font-bold">The Team</button>
+                </div>
+            </div>
+
+            <!-- Stats/Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                <div class="glass-card p-8 text-center neon-border">
+                    <i class="fas fa-code text-4xl text-[#39FF14] mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Modern Tech</h3>
+                    <p class="text-gray-400 text-sm">We use the latest web technologies to provide seamless user experiences.</p>
+                </div>
+                <div class="glass-card p-8 text-center neon-border">
+                    <i class="fas fa-language text-4xl text-[#39FF14] mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Multilingual</h3>
+                    <p class="text-gray-400 text-sm">Focusing on Japanese, Chinese, and Korean language educational tools.</p>
+                </div>
+                <div class="glass-card p-8 text-center neon-border">
+                    <i class="fas fa-gamepad text-4xl text-[#39FF14] mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Game Dev</h3>
+                    <p class="text-gray-400 text-sm">Currently planning our first mini-game project for 2026.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects-section" class="hidden-section">
+            <h2 class="text-4xl font-bold mb-12 text-center">Our <span class="text-[#39FF14]">Projects</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="h-48 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center p-6">
+                        <span class="text-5xl">🇯🇵</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold">Japanese Learning Hub</h3>
+                            <span class="text-[10px] bg-[#39FF14]/20 text-[#39FF14] px-2 py-1 rounded">ACTIVE</span>
+                        </div>
+                        <p class="text-gray-400 mb-6">The flagship project designed for Sri Lankan students to learn Japanese easily.</p>
+                        <a href="#" class="text-[#39FF14] flex items-center gap-2 hover:gap-4 transition-all">
+                            View Website <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="h-48 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center p-6">
+                        <span class="text-5xl">🎮</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold">Project "Neo-S" Game</h3>
+                            <span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded">PLANNING</span>
+                        </div>
+                        <p class="text-gray-400 mb-6">A mini-game focusing on sharp reflexes and neon aesthetics. Development starts after O/Ls.</p>
+                        <span class="text-gray-600 italic">Coming late 2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about-section" class="hidden-section">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4">Meet the <span class="text-[#39FF14]">Architects</span></h2>
+                    <p class="text-gray-400">The duo behind DM Developers.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Team Member 1 -->
+                    <div class="text-center">
+                        <div class="w-48 h-48 mx-auto mb-6 p-1 rgb-border rounded-full">
+                            <img src="https://image2url.com/r2/default/images/1769608850604-7fac133a-1961-42d2-a78d-6b604a66f6ca.png" class="w-full h-full object-cover rounded-full bg-black" alt="DJ METHUX">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">DJ METHUX</h3>
+                        <p class="text-[#39FF14] font-semibold mb-4">Founder & Concept Creator</p>
+                        <div class="glass-card p-6 text-sm text-gray-400">
+                             He is the visionary behind the DM Developers ecosystem, specializing in project conceptualization and strategic planning.
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="text-center">
+                        <div class="w-48 h-48 mx-auto mb-6 p-1 rgb-border rounded-full">
+                            <img src="https://image2url.com/r2/default/images/1769608850604-7fac133a-1961-42d2-a78d-6b604a66f6ca.png" class="w-full h-full object-cover rounded-full bg-black" alt="DUNA REAPER">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">DUNA REAPER</h3>
+                        <p class="text-[#39FF14] font-semibold mb-4">Lead Developer & Designer</p>
+                        <div class="glass-card p-6 text-sm text-gray-400">
+                            The technical engine of the team. Duna brings ideas to life through clean code, modern UI/UX, and creative engineering.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sinhala Message from original About page -->
+                <div class="mt-20 glass-card p-8 border-l-4 border-[#39FF14]">
+                    <h3 class="text-xl font-bold mb-4">අපේ පණිවිඩය 🇱🇰</h3>
+                    <p class="text-gray-300">අපි 2026 වසරේ සාමාන්‍ය පෙළ විභාගයට සූදානම් වන බැවින් දැනට ව්‍යාපෘති වල වේගය මදක් අඩු වී ඇත. නමුත් විභාගයෙන් පසු අලුත් දේවල් රැසක් සමඟ අපි නැවත එනවා!</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 mt-20">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex justify-center gap-6 mb-8 text-2xl text-gray-400">
+                <a href="#" class="hover:text-[#39FF14]"><i class="fab fa-github"></i></a>
+                <a href="#" class="hover:text-[#39FF14]"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-[#39FF14]"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="text-gray-500 text-sm">&copy; 2026 DM Developers. All Rights Reserved.</p>
+            <p class="text-xs text-gray-600 mt-2 italic">Crafted with passion by DUNA REAPER</p>
+        </div>
+    </footer>
+
+    <script>
+        const audio = document.getElementById('bg-audio');
+        const playBtn = document.getElementById('music-toggle');
+        const playIcon = document.getElementById('play-icon');
+        const volControl = document.getElementById('volume-control');
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        const continueBtn = document.getElementById('continue-btn');
+
+        // Welcome Screen Logic
+        continueBtn.addEventListener('click', () => {
+            welcomeOverlay.style.opacity = '0';
+            setTimeout(() => {
+                welcomeOverlay.style.display = 'none';
+                audio.play();
+                updateIcon();
+            }, 500);
+        });
+
+        // Music Controls
+        function updateIcon() {
+            if (audio.paused) {
+                playIcon.className = 'fas fa-play';
+                playBtn.style.background = '#39FF14';
+            } else {
+                playIcon.className = 'fas fa-pause';
+                playBtn.style.background = '#ffffff';
+            }
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+            updateIcon();
+        });
+
+        volControl.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+        });
+
+        // Navigation Logic
+        function showSection(sectionId) {
+            const sections = ['home-section', 'projects-section', 'about-section'];
+            const buttons = ['btn-home', 'btn-projects', 'btn-about'];
+
+            sections.forEach(s => {
+                document.getElementById(s).classList.add('hidden-section');
+            });
+            buttons.forEach(b => {
+                document.getElementById(b).classList.remove('tab-active');
+            });
+
+            document.getElementById(sectionId + '-section').classList.remove('hidden-section');
+            document.getElementById('btn-' + sectionId).classList.add('tab-active');
+
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
